@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Detail from "./Detail";
+import Modal from "./Modal";
 import Navigation from "./Navigation";
 import Record from "./Record";
 
@@ -14,6 +15,7 @@ const getVerifyNav = (nav) => {
 
 const App = () => {
   const [navigation, setNavigation] = useState();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const localNav = localStorage.getItem("nav");
@@ -29,11 +31,18 @@ const App = () => {
     setNavigation(verifiedNav);
   };
 
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
   return (
-    <div className="container">
-      <Navigation onNavClick={onNavClickHandler} />
-      {navigation === navList[0] ? <Record /> : <Detail />}
-    </div>
+    <>
+      <div className="container">
+        <Navigation onNavClick={onNavClickHandler} />
+        <button onClick={openModal}>Modal</button>
+        {navigation === navList[0] ? <Record /> : <Detail />}
+      </div>
+      {isModalOpen && <Modal closeModal={closeModal} />}
+    </>
   );
 };
 
